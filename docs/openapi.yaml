@@ -18,6 +18,8 @@ paths:
       summary: List all tasks
       tags:
         - Tasks
+      parameters:
+        - $ref: '#/components/parameters/TaskCompleted'
       responses:
         '200':
           description: OK
@@ -27,6 +29,21 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Task'
+        '400':
+          description: Bad request due to invalid data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: string
+                example:
+                  error: 'completed must be true or false'
     post:
       summary: Create a new task
       tags:
@@ -92,3 +109,12 @@ components:
         completed:
           type: boolean
           example: false
+  parameters:
+    TaskCompleted:
+      name: completed
+      in: query
+      required: false
+      description: Filter by tasks completion status
+      schema:
+        type: boolean
+        example: false
